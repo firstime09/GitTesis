@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
-dataset = pd.read_csv(r'D:\FORESTS2020\GITHUB\Plugin\GitTesis\SVR\14112018D2.csv')
+dataset = pd.read_csv(SVR/14112018D2.csv')
 X = dataset.iloc[:, :6]
 y = dataset.Class
 
