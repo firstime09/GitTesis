@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="en"><Esri><CreaDate>20180906</CreaDate><CreaTime>13465500</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.5\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\ExtractByMask" Date="20180906" Time="134655">ExtractByMask "Band 6.img" "E:\Data Penelitian\Cidanau\VEKTOR_CIDANAU\SHP\DAS_Cidanau.shp" "E:\Data Penelitian\Data Lidar\Data LiDAR\BAND LANDSAT\Band 6c.img"</Process></lineage></DataProperties></Esri></metadata>
