@@ -1,8 +1,47 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.svm import SVR, SVC
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 class allFunction:
+    def F2020_SVR(dataX, dataY, tsize, rstate): #--- Model SVR kernel=rbf FORESTS2020
+        X_train, X_test, y_train, y_test = train_test_split(dataX, dataY, test_size=tsize, random_state=rstate)
+        sc = StandardScaler()
+        # sc.fit(X_train)
+        X_train = sc.fit_transform(X_train)
+        X_test = sc.transform(X_test)
+        best_score = 0
+        for gamma in [0.001, 0.01, 0.1, 1, 10, 100]:
+            for C in [0.001, 0.01, 0.1, 1, 10, 100]:
+                for epsilon in [0.001, 0.01, 0.1, 1, 10, 100]:
+                    # Train Model SVR
+                    clfSVR = SVR(kernel='rbf', C=C, gamma=gamma, epsilon=epsilon)
+                    clfSVR.fit(X_train, y_train)
+                    score = clfSVR.score(X_test, y_test)
+                    if score > best_score:
+                        best_score = score
+                        best_parameters = {'C': C, 'gamma': gamma, 'epsilon': epsilon}
+        return(best_score, best_parameters)
+
+    def F2020_SVM(krnel, dataX, dataY, tsize, rstate): #--- Model SVM (30/11-2018)
+        X_train, X_test, y_train, y_test = train_test_split(dataX, dataY, test_size=tsize, random_state=rstate)
+        sc = StandardScaler()
+        X_train = sc.fit_transform(X_train)
+        X_test = sc.transform(X_test)
+        best_score = 0
+        for C in [0.001, 0.01, 0.1, 1, 10, 100]:
+            for gamma in [0.001, 0.01, 0.1, 1, 10, 100]:
+                # Make the model SVM
+                clfSVM = SVC(kernel='krnel', C=C, gamma=gamma)
+                clfSVM.fit(X_train, y_train)
+                score = clfSVM.score(X_test, y_test)
+                if score > best_score:
+                    best_score = score
+                    best_parameters = {'C':C, 'gamma':gamma}
+        return(best_score, best_parameters)
+
     def normaliZe(data): #--- Normalisasi Data
         outp = np.array(np.ravel(data), copy=True)
         maxVal = np.max(np.abs(outp))
