@@ -1,0 +1,12 @@
+
+type IC_final =>>  Dictionary
+csv2 = {}
+for c in IC_final:
+        val4=IC_final[c]
+        csv2[c]= val4[a_true,b_true].ravel()
+        #print "hasil", csv2
+        df=pd.DataFrame(csv2)
+        df2=pd.DataFrame(temp)
+        df3=pd.DataFrame({'IC':IC_true})
+        dfn=pd.concat([df3, df, df2], axis=1)
+        dfn.to_csv("D:/FORESTS2020/TRAINING/PyQgis/RESULT/Landsat8/TOPO/TP040118/sample12562.csv", index= False)
