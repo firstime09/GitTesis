@@ -6,21 +6,23 @@ library(Boruta)
 library(caret)
 library(raster)
 library(dismo)
-setwd("F:/TRAINING/R/DATA/DATA R")
-file =read_excel("All_Plot_Topo.xlsx")
+# setwd("C:/Users/user/Dropbox/FORESTS2020/00AllData/Dataframe Sumatra/Data FRCI Window Area_Malta/")
+setwd("D:/00RCode/Result/Data Sumatera")
+file =read_excel("FRCI_Line_7.xlsx")
+# file =read.csv("FRCI_Line_6.csv")
 head(file)
-dataall <- file[,-c(9,10,11)]
-data<-file[,-c(9,10,11)]
+dataall <- file[,-c(3,10)] ## Drop column in dataframe
+data<-file[,-c(3,10)] ## Drop column in dataframe
 head(data)
 
 number <-data %>%
-  group_by(class) %>%
+  group_by(Class) %>%
   summarize(n())
 sample <-data%>%
-  group_by(class)%>%
+  group_by(Class)%>%
   sample_n(min(number$`n()`))
 head(sample)
-sample<-sample[-1]
+sample<-sample[-2] ## For remove column Class
 
 
 head(sample)
@@ -40,7 +42,9 @@ par(mfrow=c(1,2))
 plot(cleanall$Band_4, cleanall$frci)
 plot(dataSample$Band_4, dataSample$frci)
 
-
+setwd('D:/00RCode/Result/Data Sumatera/') #---------------------- After running
+write.xlsx(cleanall, file = "FRCI_Line_7_Sumatera_78.13N.xlsx")
+write.csv(cleanall, file = "FRCI_Line_7_Sumatera_78.13N.csv")
 ## Feature Selection
 svrdata <- cleanall
 svrdata <- cleanall[-8]
