@@ -9,7 +9,7 @@ library(dismo)
 library(openxlsx)
 # setwd("C:/Users/user/Dropbox/FORESTS2020/00AllData/Dataframe Sumatra/Data FRCI Window Area_Malta/")
 setwd("D:/00RCode/Result/Data Sumatera")
-file =read_excel("Pegunungan_Sumatera_All-New.xlsx")
+file =read_excel("FRCI_LINE10.xlsx")
 # file =read.csv("FRCI_Line_6.csv")
 head(file)
 dataall <- file[,-c(3,10)] ## Drop column Band_1 and Band_9 in dataframe
@@ -23,7 +23,7 @@ sample <-data%>%
   group_by(Class)%>%
   sample_n(min(number$`n()`))
 head(sample)
-sample<-sample[-1] ## For remove column Class
+sample<-sample[-2] ## For remove column Class
 
 
 head(sample)
@@ -83,11 +83,11 @@ error <- testing$frci - predictedY  #
 svrPredictionRMSE <- rmse(error)  #  
 
 
-# tuneResult <- tune(svm, frci ~ .,  data = training,
-#                    ranges = list(epsilon = seq(0,1,0.1), cost = 2^(2:9)))
-
 tuneResult <- tune(svm, frci ~ .,  data = training,
-                   ranges = list(epsilon = 0.01, cost = 10))
+                   ranges = list(epsilon = seq(0,1,0.1), cost = 2^(2:9)))
+
+# tuneResult <- tune(svm, frci ~ .,  data = training,
+#                    ranges = list(epsilon = 0.01, cost = 10))
 # print(tuneResult) 
 # plot(tuneResult)
 
