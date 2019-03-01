@@ -6,13 +6,14 @@ library(Boruta)
 library(caret)
 library(raster)
 library(dismo)
+library(openxlsx)
 # setwd("C:/Users/user/Dropbox/FORESTS2020/00AllData/Dataframe Sumatra/Data FRCI Window Area_Malta/")
 setwd("D:/00RCode/Result/Data Sumatera")
-file =read_excel("FRCI_Line_7.xlsx")
+file =read_excel("Pegunungan_Sumatera_All-New.xlsx")
 # file =read.csv("FRCI_Line_6.csv")
 head(file)
-dataall <- file[,-c(3,10)] ## Drop column in dataframe
-data<-file[,-c(3,10)] ## Drop column in dataframe
+dataall <- file[,-c(3,10)] ## Drop column Band_1 and Band_9 in dataframe
+data<-file[,-c(3,10)] ## Drop column Band_1 and Band_9 in dataframe
 head(data)
 
 number <-data %>%
@@ -22,7 +23,7 @@ sample <-data%>%
   group_by(Class)%>%
   sample_n(min(number$`n()`))
 head(sample)
-sample<-sample[-2] ## For remove column Class
+sample<-sample[-1] ## For remove column Class
 
 
 head(sample)
@@ -42,9 +43,9 @@ par(mfrow=c(1,2))
 plot(cleanall$Band_4, cleanall$frci)
 plot(dataSample$Band_4, dataSample$frci)
 
-setwd('D:/00RCode/Result/Data Sumatera/') #---------------------- After running
-write.xlsx(cleanall, file = "FRCI_Line_7_Sumatera_78.13N.xlsx")
-write.csv(cleanall, file = "FRCI_Line_7_Sumatera_78.13N.csv")
+# setwd('D:/00RCode/Result/Data Sumatera/') #---------------------- After running
+# write.xlsx(cleanall, file = "Pegunungan_Sumatera_All-New_38.23.xlsx")
+# write.csv(cleanall, file = "Pegunungan_Sumatera_All-New_38.23.csv")
 ## Feature Selection
 svrdata <- cleanall
 svrdata <- cleanall[-8]
@@ -82,10 +83,13 @@ error <- testing$frci - predictedY  #
 svrPredictionRMSE <- rmse(error)  #  
 
 
+# tuneResult <- tune(svm, frci ~ .,  data = training,
+#                    ranges = list(epsilon = seq(0,1,0.1), cost = 2^(2:9)))
+
 tuneResult <- tune(svm, frci ~ .,  data = training,
-                   ranges = list(epsilon = seq(0,1,0.1), cost = 2^(2:9)))
-print(tuneResult) 
-plot(tuneResult)
+                   ranges = list(epsilon = 0.01, cost = 10))
+# print(tuneResult) 
+# plot(tuneResult)
 
 tunedModel <- tuneResult$best.model
 tunedModelY <- predict(tunedModel, testing)
@@ -111,5 +115,4 @@ ss_residuals <- sum((df$testing.frci - df$tunedModelY)^2)
 
 # 3. R2 Score
 r2 <- 1 - ss_residuals / ss_total
-
 
