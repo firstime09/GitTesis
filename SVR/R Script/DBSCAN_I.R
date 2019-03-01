@@ -44,8 +44,8 @@ plot(cleanall$Band_4, cleanall$frci)
 plot(dataSample$Band_4, dataSample$frci)
 
 # setwd('D:/00RCode/Result/Data Sumatera/') #---------------------- After running
-# write.xlsx(cleanall, file = "Pegunungan_Sumatera_All-New_38.23.xlsx")
-# write.csv(cleanall, file = "Pegunungan_Sumatera_All-New_38.23.csv")
+# write.xlsx(cleanall, file = "FRCI_LINE10_46.21.xlsx")
+# write.csv(cleanall, file = "FRCI_LINE10_46.21.csv")
 ## Feature Selection
 svrdata <- cleanall
 svrdata <- cleanall[-8]
