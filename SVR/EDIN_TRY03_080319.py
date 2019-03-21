@@ -15,8 +15,8 @@ def Min_Max_Norm(data):
 gdal.UseExceptions()
 gdal.AllRegister()
 
-path1 = 'D:/GitFolder1611/GitTesis/TIF RAW/'
-img_ds = gdal.Open(path1 + 'Cidanau_Stack_150319.tiff', gdal.GA_ReadOnly)
+path1 = r"D:\FORESTS2020\GITHUB\Plugin\GitTesis\TIF RAW"
+img_ds = gdal.Open(path1 + '/Cidanau_Stack_150319.tiff', gdal.GA_ReadOnly)
 # roi_ds = gdal.Open('D:/00PyCode/00AllData/Test_Data_08032019/training/training.TIF', gdal.GA_ReadOnly)
 
 img = np.zeros((img_ds.RasterYSize, img_ds.RasterXSize, img_ds.RasterCount),
