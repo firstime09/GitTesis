@@ -19,8 +19,8 @@ path_layer = r"F:\DATA\02 RASTER\LANDSAT\SUMATRA_LIDAR\CITRA_SUMATERA\HASIL\CLIP
 file_layer = glob.glob(path_layer + "/*.TIF")
 file_vrt = path_layer + "/stacked_1.vrt"
 file_tif = path_layer + "/LL_stack.tif"
-vrt = gdal.BuildVRT(file_vrt,file_layer, separate=True)
-stack_layer = gdal.Translate(file_tif, vrt)
+# vrt = gdal.BuildVRT(file_vrt,file_layer, separate=True)
+# stack_layer = gdal.Translate(file_tif, vrt)
 
 
 ####
@@ -89,30 +89,30 @@ final_prediction = class_prediction * AOI
 #     Norm = (data - np.min(data)) / (np.max(data) - np.min(data))
 #     return Norm
 
-# # predi_norm = Min_Max_Norm(class_prediction)
-# # Make data prediction to TIF file
-output_path = path_layer + "/Frci_predic_LL.TIF"
-# output_path = path_layer + "/AOI.TIF"
-raster = file_tif
-in_path = gdal.Open(raster)
-# in_array = class_prediction
-in_array = final_prediction
-# global proj, geotrans, row, col
-proj        = in_path.GetProjection()
-geotrans    = in_path.GetGeoTransform()
-row         = in_path.RasterYSize
-col         = in_path.RasterXSize
-driver      = gdal.GetDriverByName("GTiff")
-outdata     = driver.Create(output_path, col, row, 1, gdal.GDT_Float32)
-outband     = outdata.GetRasterBand(1)
-outband.SetNoDataValue(-9999)
-outband.WriteArray(in_array)
-# outband.WriteArray(AOI)
-outdata.SetGeoTransform(geotrans) # Georeference the image
-outdata.SetProjection(proj) # Write projection information
-outdata.FlushCache()
-outdata = None
-#
+# # # predi_norm = Min_Max_Norm(class_prediction)
+# # # Make data prediction to TIF file
+# output_path = path_layer + "/Frci_predic_LL.TIF"
+# # output_path = path_layer + "/AOI.TIF"
+# raster = file_tif
+# in_path = gdal.Open(raster)
+# # in_array = class_prediction
+# in_array = final_prediction
+# # global proj, geotrans, row, col
+# proj        = in_path.GetProjection()
+# geotrans    = in_path.GetGeoTransform()
+# row         = in_path.RasterYSize
+# col         = in_path.RasterXSize
+# driver      = gdal.GetDriverByName("GTiff")
+# outdata     = driver.Create(output_path, col, row, 1, gdal.GDT_Float32)
+# outband     = outdata.GetRasterBand(1)
+# outband.SetNoDataValue(-9999)
+# outband.WriteArray(in_array)
+# # outband.WriteArray(AOI)
+# outdata.SetGeoTransform(geotrans) # Georeference the image
+# outdata.SetProjection(proj) # Write projection information
+# outdata.FlushCache()
+# outdata = None
+# #
 # # # y_pred = clfSVR1.predict(img_as_array)
 # # a1 = F2020ML.F2020_RMSE(y_test, class_prediction)
 # print(best_parm)
