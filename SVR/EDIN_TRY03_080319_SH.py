@@ -25,6 +25,11 @@ vrt = gdal.BuildVRT(file_vrt,file_layer, separate=True)
 stack_layer = gdal.Translate(file_tif, vrt)
 
 
+#####
+AOI_1 = gdal.Open(file_tif)
+AOI_2 = AOI_1.GetRasterBand(1).ReadAsArray()
+AOI= AOI_2 > 0
+
 ####
 img_ds = gdal.Open(file_tif, gdal.GA_ReadOnly)
 img = np.zeros((img_ds.RasterYSize, img_ds.RasterXSize, img_ds.RasterCount),
@@ -80,18 +85,23 @@ print('Reshaped from {o} to {n}'.format(o=img.shape, n=img_as_array.shape))
 # Now predict for each pixel
 class_prediction = clfSVR1.predict(img_as_array)
 class_prediction = class_prediction.reshape(img[:, :, 0].shape)
+# ####class_prediction_adjusted
+# class_prediction[class_prediction < 0] = 0
 ####class_prediction_adjusted
-class_prediction[class_prediction < 0] = 0
-def Min_Max_Norm(data):
-    Norm = (data - np.min(data)) / (np.max(data) - np.min(data))
-    return Norm
-
-predi_norm = Min_Max_Norm(class_prediction)
+# class_prediction[class_prediction <= 0] = 0.01
+final_prediction = class_prediction * AOI
+# def Min_Max_Norm(data):
+#     Norm = (data - np.min(data)) / (np.max(data) - np.min(data))
+#     return Norm
+#
+# predi_norm = Min_Max_Norm(class_prediction)
 # Make data prediction to TIF file
-output_path = path_layer + "/Frci_predic_cf64_adjusted.TIF"
+output_path = path_layer + "/Frci_predic_Cidanau-AOI-020519_CF64.TIF"
+# output_path = path_layer + "/AOI.TIF"
 raster = file_tif
 in_path = gdal.Open(raster)
-in_array = class_prediction
+# in_array = class_prediction
+in_array = final_prediction
 # global proj, geotrans, row, col
 proj        = in_path.GetProjection()
 geotrans    = in_path.GetGeoTransform()
@@ -102,6 +112,7 @@ outdata     = driver.Create(output_path, col, row, 1, gdal.GDT_CFloat64)
 outband     = outdata.GetRasterBand(1)
 outband.SetNoDataValue(-9999)
 outband.WriteArray(in_array)
+# outband.WriteArray(AOI)
 outdata.SetGeoTransform(geotrans) # Georeference the image
 outdata.SetProjection(proj) # Write projection information
 outdata.FlushCache()
