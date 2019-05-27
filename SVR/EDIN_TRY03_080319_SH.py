@@ -15,7 +15,7 @@ gdal.UseExceptions()
 gdal.AllRegister()
 
 #### stack layer data
-path_layer = r"D:\FORESTS2020\GITHUB\Plugin\GitTesis\TIF RAW\stack"
+path_layer = r"D:\FORESTS2020\GITHUB\Plugin\GitTesis\TIF RAW\hudji"
 file_layer = glob.glob(path_layer + "/*.tif")
 # system('gdal_merge -o cidanau_stack.tif {fileraster}'.format(fileraster=file_layer))
 # gm.main(['', '-o', 'cidanau_stack.tif', '{fileraster}'.format(fileraster=file_layer)])
@@ -36,7 +36,7 @@ img = np.zeros((img_ds.RasterYSize, img_ds.RasterXSize, img_ds.RasterCount),
                gdal_array.GDALTypeCodeToNumericTypeCode(img_ds.GetRasterBand(1).DataType))
 # print(img)
 for b in range(img.shape[2]):
-    img[:, :, b] = img_ds.GetRasterBand(b + 1).ReadAsArray()
+    img[:, :, b] = img_ds.GetRasterBand(b + 1).ReadAsArray().astype(float)
 # roi = roi_ds.GetRasterBand(1).ReadAsArray().astype(np.uint8)
 
 # plt.subplot(121)
@@ -88,7 +88,7 @@ class_prediction = class_prediction.reshape(img[:, :, 0].shape)
 # ####class_prediction_adjusted
 # class_prediction[class_prediction < 0] = 0
 ####class_prediction_adjusted
-# class_prediction[class_prediction <= 0] = 0.01
+class_prediction[class_prediction <= 0] = 0.01
 final_prediction = class_prediction * AOI
 # def Min_Max_Norm(data):
 #     Norm = (data - np.min(data)) / (np.max(data) - np.min(data))
